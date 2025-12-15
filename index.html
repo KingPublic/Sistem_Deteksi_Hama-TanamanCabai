@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Deteksi Hama Cabai - Desa Sengka</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Slideshow Container -->
+    <div class="background-slideshow">
+        <div class="bg-image active" style="background-image: url('images/a.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/b.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/c.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/d.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/e.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/f.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/g.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/h.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/i.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/j.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/k.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/l.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/m.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/n.jpg')"></div>
+        <div class="bg-image" style="background-image: url('images/o.jpg')"></div>
+    </div>
+
+    <!-- Dark Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">Sistem Deteksi Hama Cabai</h1>
+                <p class="subtitle">Monitoring Otomatis Berbasis Sensor - Desa Sengka</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Section -->
+            <section class="card input-section">
+                <h2 class="section-title">📊 Input Data Sensor</h2>
+                <p class="section-description">Masukkan data dari sensor untuk analisis kondisi tanaman cabai</p>
+                
+                <form id="sensorForm" class="form">
+                    <div class="form-group">
+                        <label for="suara" class="form-label">
+                            <span class="icon">🔊</span>
+                            Suara (dB)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="suara" 
+                            name="suara" 
+                            class="form-input" 
+                            placeholder="Contoh: 75.5"
+                            step="0.1"
+                            required
+                        >
+                        <small class="form-hint">Rentang normal: 30-90 dB</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="getaran" class="form-label">
+                            <span class="icon">📳</span>
+                            Getaran (m/s²)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="getaran" 
+                            name="getaran" 
+                            class="form-input" 
+                            placeholder="Contoh: 2.5"
+                            step="0.01"
+                            required
+                        >
+                        <small class="form-hint">Rentang normal: 0-5 m/s²</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="kelembaban" class="form-label">
+                            <span class="icon">💧</span>
+                            Kelembaban (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="kelembaban" 
+                            name="kelembaban" 
+                            class="form-input" 
+                            placeholder="Contoh: 85"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            required
+                        >
+                        <small class="form-hint">Rentang: 0-100%</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">🔍</span>
+                        Analisis Sekarang
+                    </button>
+                </form>
+            </section>
+
+            <!-- Output Section -->
+            <section class="card output-section" id="outputSection" style="display: none;">
+                <h2 class="section-title">📋 Hasil Analisis</h2>
+                
+                <div class="results-grid">
+                    <!-- Status Hama -->
+                    <div class="result-card" id="hamaCard">
+                        <div class="result-icon" id="hamaIcon">🐛</div>
+                        <h3 class="result-title">Status Hama</h3>
+                        <p class="result-status" id="hamaStatus">-</p>
+                        <p class="result-description" id="hamaDescription">-</p>
+                    </div>
+
+                    <!-- Status Cuaca -->
+                    <div class="result-card" id="cuacaCard">
+                        <div class="result-icon" id="cuacaIcon">☀️</div>
+                        <h3 class="result-title">Status Cuaca</h3>
+                        <p class="result-status" id="cuacaStatus">-</p>
+                        <p class="result-description" id="cuacaDescription">-</p>
+                    </div>
+                </div>
+
+                <!-- Rekomendasi -->
+                <div class="recommendation-card" id="rekomendasiCard">
+                    <h3 class="recommendation-title">💡 Rekomendasi Tindakan</h3>
+                    <div class="recommendation-content" id="rekomendasiContent">
+                        <p>Menunggu hasil analisis...</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    <span class="btn-icon">🔄</span>
+                    Analisis Lagi
+                </button>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© 2025 Sistem Deteksi Hama Cabai - Desa Sengka | Penelitian Pertanian Modern</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
