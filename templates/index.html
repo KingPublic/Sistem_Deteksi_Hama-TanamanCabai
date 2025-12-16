@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming - Deteksi Hama</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Background Slideshow -->
+    <div class="background-slideshow">
+        <div class="bg-image active" style="background-image: url('{{ url_for('static', filename='images/a.jpg') }}')"></div>
+        <div class="bg-image" style="background-image: url('{{ url_for('static', filename='images/b.jpg') }}')"></div>
+        <div class="bg-image" style="background-image: url('{{ url_for('static', filename='images/c.jpg') }}')"></div>
+    </div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">Sistem Deteksi Hama Cerdas</h1>
+                <p class="subtitle">Analisis Risiko Berbasis AI & Probabilitas</p>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- INPUT SECTION -->
+            <section class="card input-section">
+                <h2 class="section-title">📊 Input Data Sensor</h2>
+                <form id="sensorForm" class="form">
+                    <div class="form-group">
+                        <label class="form-label"><span class="icon">🔊</span> Suara (dB)</label>
+                        <input type="number" id="suara" class="form-input" placeholder="30 - 90 dB" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span class="icon">📳</span> Getaran (m/s²)</label>
+                        <input type="number" id="getaran" class="form-input" placeholder="0 - 5 m/s²" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span class="icon">💧</span> Kelembaban (%)</label>
+                        <input type="number" id="kelembaban" class="form-input" placeholder="0 - 100 %" step="0.1" max="100" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-icon">🧠</span> Analisis AI
+                    </button>
+                </form>
+            </section>
+
+            <!-- OUTPUT SECTION -->
+            <section class="card output-section" id="outputSection" style="display: none;">
+                <h2 class="section-title">📋 Hasil Analisis Risiko</h2>
+                
+                <div class="results-grid">
+                    <!-- CARD HAMA DENGAN METERAN -->
+                    <div class="result-card" id="hamaCard">
+                        <div class="result-icon" id="hamaIcon">🔍</div>
+                        <h3 class="result-title">Tingkat Risiko Hama</h3>
+                        
+                        <!-- SCORE DISPLAY -->
+                        <div class="score-container">
+                            <span id="scoreText" class="score-text">0%</span>
+                        </div>
+                        
+                        <!-- PROGRESS BAR -->
+                        <div class="progress-bg">
+                            <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
+                        </div>
+
+                        <p class="result-status" id="hamaStatus">Menunggu...</p>
+                        <p class="result-description" id="hamaDescription">-</p>
+                    </div>
+
+                    <!-- CARD CUACA -->
+                    <div class="result-card" id="cuacaCard">
+                        <div class="result-icon" id="cuacaIcon">☀️</div>
+                        <h3 class="result-title">Status Cuaca</h3>
+                        <p class="result-status" id="cuacaStatus">-</p>
+                        <p class="result-description" id="cuacaDescription">-</p>
+                    </div>
+                </div>
+
+                <div class="recommendation-card" id="rekomendasiCard">
+                    <h3 class="recommendation-title">💡 Rekomendasi AI</h3>
+                    <div class="recommendation-content" id="rekomendasiContent"></div>
+                </div>
+
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    <span class="btn-icon">🔄</span> Cek Lagi
+                </button>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>© 2025 Smart Farming System - Desa Sengka</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
