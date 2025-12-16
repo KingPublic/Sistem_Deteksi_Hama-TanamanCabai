@@ -16,7 +16,7 @@ body {
 }
 
 /* ==========================================
-   BACKGROUND SLIDESHOW
+   BACKGROUND SLIDESHOW (ANIMASI FADE)
    ========================================== */
 .background-slideshow {
   position: fixed;
@@ -25,6 +25,7 @@ body {
   width: 100%;
   height: 100%;
   z-index: -2;
+  background-color: #000; /* PENTING: Mencegah kedip putih saat transisi */
 }
 
 .bg-image {
@@ -36,12 +37,14 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
+  
+  /* Logika Fade In/Out */
+  opacity: 0; /* Default tidak terlihat */
+  transition: opacity 2s ease-in-out; /* Durasi animasi 2 detik */
 }
 
 .bg-image.active {
-  opacity: 1;
+  opacity: 1; /* Saat ada class active, gambar terlihat */
 }
 
 .overlay {
@@ -52,12 +55,12 @@ body {
   height: 100%;
   background: linear-gradient(
     135deg,
-    rgba(22, 101, 52, 0.35) 0%,
-    rgba(21, 128, 61, 0.25) 50%,
-    rgba(34, 197, 94, 0.15) 100%
+    rgba(22, 101, 52, 0.45) 0%,
+    rgba(21, 128, 61, 0.35) 50%,
+    rgba(34, 197, 94, 0.25) 100%
   );
   z-index: -1;
-  backdrop-filter: blur(1px);
+  backdrop-filter: blur(2px);
 }
 
 /* ==========================================
@@ -103,16 +106,13 @@ body {
 }
 
 /* ==========================================
-   MAIN CONTENT
+   MAIN CONTENT & CARDS
    ========================================== */
 .main-content {
   display: grid;
   gap: 2rem;
 }
 
-/* ==========================================
-   CARD STYLES
-   ========================================== */
 .card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px;
@@ -252,14 +252,18 @@ body {
   transform: translateY(-5px);
 }
 
-.result-card.warning {
-  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-  border-color: #fcd34d;
+/* Warna Status Card (Dipanggil oleh JS) */
+.result-card.safe { 
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-color: #bbf7d0; 
 }
-
-.result-card.danger {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  border-color: #fca5a5;
+.result-card.warning { 
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fcd34d; 
+}
+.result-card.danger { 
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    border-color: #fca5a5; 
 }
 
 .result-icon {
@@ -278,18 +282,6 @@ body {
   font-size: 1.4rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-}
-
-.result-status.safe {
-  color: #16a34a;
-}
-
-.result-status.warning {
-  color: #d97706;
-}
-
-.result-status.danger {
-  color: #dc2626;
 }
 
 .result-description {
@@ -320,33 +312,48 @@ body {
   line-height: 1.8;
 }
 
-.recommendation-content p {
-  margin-bottom: 0.75rem;
+/* ==========================================
+   PROGRESS BAR & SCORE (Tambahan Baru)
+   ========================================== */
+.risk-meter {
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
-.recommendation-content strong {
-  color: #1e40af;
-  font-weight: 600;
+.progress-container {
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    height: 1.5rem;
+    overflow: hidden;
+    margin-top: 0.5rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.recommendation-list {
-  list-style: none;
-  padding-left: 0;
+#progressBar {
+    height: 100%;
+    width: 0%;
+    background-color: #16a34a; /* Default hijau */
+    transition: width 1s ease-in-out, background-color 0.5s ease;
+    border-radius: 9999px;
 }
 
-.recommendation-list li {
-  padding: 0.5rem 0;
-  padding-left: 1.5rem;
-  position: relative;
+.score-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #4b5563;
 }
 
-.recommendation-list li:before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  color: #16a34a;
-  font-weight: bold;
+#scoreText {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #166534;
 }
+
+/* Warna Progress Bar (Dipanggil oleh JS) */
+.bg-safe { background-color: #16a34a !important; }
+.bg-warning { background-color: #d97706 !important; }
+.bg-danger { background-color: #dc2626 !important; }
 
 /* ==========================================
    FOOTER
@@ -362,103 +369,32 @@ body {
 }
 
 /* ==========================================
-   ANIMATIONS
+   ANIMATIONS (Page Load)
    ========================================== */
 @keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
 @media (max-width: 768px) {
-  .title {
-    font-size: 1.8rem;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-  }
-
-  .card {
-    padding: 1.5rem;
-  }
-
-  .results-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .btn {
-    padding: 0.875rem 1.5rem;
-    font-size: 1rem;
-  }
+  .title { font-size: 1.8rem; }
+  .subtitle { font-size: 1rem; }
+  .card { padding: 1.5rem; }
+  .results-grid { grid-template-columns: 1fr; }
+  .btn { padding: 0.875rem 1.5rem; font-size: 1rem; }
 }
 
 @media (max-width: 480px) {
-  .container {
-    padding: 1rem 0.5rem;
-  }
-
-  .title {
-    font-size: 1.5rem;
-  }
-
-  .header-content {
-    padding: 1.5rem;
-  }
-
-  .card {
-    padding: 1rem;
-  }
+  .container { padding: 1rem 0.5rem; }
+  .title { font-size: 1.5rem; }
+  .header-content { padding: 1.5rem; }
+  .card { padding: 1rem; }
 }
-
-/* --- TAMBAHAN UNTUK PROGRESS BAR --- */
-.score-container {
-    margin: 10px 0;
-}
-
-.score-text {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #333;
-}
-
-.progress-bg {
-    width: 100%;
-    height: 15px;
-    background-color: #e5e7eb; /* Abu-abu terang */
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    background-color: #16a34a; /* Default Hijau */
-    transition: width 1s ease-in-out, background-color 0.5s ease;
-}
-
-/* Warna Status Card */
-.result-card.safe { border-color: #bbf7d0; background: #f0fdf4; }
-.result-card.warning { border-color: #fcd34d; background: #fffbeb; }
-.result-card.danger { border-color: #fca5a5; background: #fef2f2; }

@@ -3,98 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Farming - Deteksi Hama</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Sistem Deteksi Hama Cabai - Desa Sengka</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <!-- Menambahkan sedikit CSS inline untuk Progress Bar yang dibutuhkan JS -->
+    <style>
+        /* CSS Tambahan khusus untuk komponen Progress Bar yang dipanggil di JS */
+        .risk-meter {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            height: 1.5rem;
+            overflow: hidden;
+            margin-top: 0.5rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background-color: #16a34a; /* Default hijau */
+            transition: width 1s ease-in-out, background-color 0.5s ease;
+            border-radius: 9999px;
+        }
+        .score-label {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+        #scoreText {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #166534;
+        }
+    </style>
 </head>
 <body>
-    <!-- Background Slideshow -->
+    <!-- Background Slideshow Container -->
     <div class="background-slideshow">
-        <div class="bg-image active" style="background-image: url('{{ url_for('static', filename='images/a.jpg') }}')"></div>
-        <div class="bg-image" style="background-image: url('{{ url_for('static', filename='images/b.jpg') }}')"></div>
-        <div class="bg-image" style="background-image: url('{{ url_for('static', filename='images/c.jpg') }}')"></div>
+        <div class="bg-image active" style="background-image: url('/static/images/a.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/b.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/c.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/d.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/e.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/f.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/g.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/h.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/i.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/j.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/k.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/l.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/m.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/n.jpg')"></div>
+        <div class="bg-image" style="background-image: url('/static/images/o.jpg')"></div>
     </div>
+
+    <!-- Dark Overlay -->
     <div class="overlay"></div>
 
+    <!-- Main Container -->
     <div class="container">
+        <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <h1 class="title">Sistem Deteksi Hama Cerdas</h1>
-                <p class="subtitle">Analisis Risiko Berbasis AI & Probabilitas</p>
+                <h1 class="title">Sistem Deteksi Hama Cabai</h1>
+                <p class="subtitle">Monitoring Otomatis Berbasis Sensor & AI - Desa Sengka</p>
             </div>
         </header>
 
+        <!-- Main Content -->
         <main class="main-content">
-            <!-- INPUT SECTION -->
+            <!-- Input Section -->
             <section class="card input-section">
                 <h2 class="section-title">📊 Input Data Sensor</h2>
+                <p class="section-description">Masukkan data real-time dari sensor IoT untuk analisis kondisi tanaman.</p>
+                
+                <!-- ID Form harus 'sensorForm' agar sesuai JS -->
                 <form id="sensorForm" class="form">
                     <div class="form-group">
-                        <label class="form-label"><span class="icon">🔊</span> Suara (dB)</label>
-                        <input type="number" id="suara" class="form-input" placeholder="30 - 90 dB" step="0.1" required>
+                        <label for="suara" class="form-label">
+                            <span class="icon">🔊</span>
+                            Intensitas Suara (dB)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="suara" 
+                            name="suara" 
+                            class="form-input" 
+                            placeholder="Contoh: 75.5"
+                            step="0.1"
+                            onkeydown="return event.keyCode !== 69" 
+                            required
+                        >
+                        <small class="form-hint">Deteksi kebisingan aktivitas hama (Normal: 30-90 dB)</small>
                     </div>
+
                     <div class="form-group">
-                        <label class="form-label"><span class="icon">📳</span> Getaran (m/s²)</label>
-                        <input type="number" id="getaran" class="form-input" placeholder="0 - 5 m/s²" step="0.01" required>
+                        <label for="getaran" class="form-label">
+                            <span class="icon">📳</span>
+                            Intensitas Getaran (m/s²)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="getaran" 
+                            name="getaran" 
+                            class="form-input" 
+                            placeholder="Contoh: 2.5"
+                            step="0.01"
+                            onkeydown="return event.keyCode !== 69"
+                            required
+                        >
+                        <small class="form-hint">Gerakan pada batang/daun (Normal: 0-5 m/s²)</small>
                     </div>
+
                     <div class="form-group">
-                        <label class="form-label"><span class="icon">💧</span> Kelembaban (%)</label>
-                        <input type="number" id="kelembaban" class="form-input" placeholder="0 - 100 %" step="0.1" max="100" required>
+                        <label for="kelembaban" class="form-label">
+                            <span class="icon">💧</span>
+                            Kelembaban Udara (%)
+                        </label>
+                        <input 
+                            type="number" 
+                            id="kelembaban" 
+                            name="kelembaban" 
+                            class="form-input" 
+                            placeholder="Contoh: 85"
+                            step="0.1"
+                            min="0"
+                            max="100"
+                            onkeydown="return event.keyCode !== 69"
+                            required
+                        >
+                        <small class="form-hint">Kondisi lingkungan sekitar (0-100%)</small>
                     </div>
+
                     <button type="submit" class="btn btn-primary">
-                        <span class="btn-icon">🧠</span> Analisis AI
+                        <span class="btn-icon">🔍</span>
+                        Analisis AI Sekarang
                     </button>
                 </form>
             </section>
 
-            <!-- OUTPUT SECTION -->
+            <!-- Output Section -->
+            <!-- ID harus 'outputSection' -->
             <section class="card output-section" id="outputSection" style="display: none;">
-                <h2 class="section-title">📋 Hasil Analisis Risiko</h2>
+                <h2 class="section-title">📋 Hasil Analisis AI</h2>
                 
-                <div class="results-grid">
-                    <!-- CARD HAMA DENGAN METERAN -->
-                    <div class="result-card" id="hamaCard">
-                        <div class="result-icon" id="hamaIcon">🔍</div>
-                        <h3 class="result-title">Tingkat Risiko Hama</h3>
-                        
-                        <!-- SCORE DISPLAY -->
-                        <div class="score-container">
-                            <span id="scoreText" class="score-text">0%</span>
-                        </div>
-                        
-                        <!-- PROGRESS BAR -->
-                        <div class="progress-bg">
-                            <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
-                        </div>
+                <!-- Bagian Meteran Risiko (Ditambahkan agar sesuai dengan JS: scoreText & progressBar) -->
+                <div class="risk-meter">
+                    <div class="score-label">Tingkat Risiko Hama: <span id="scoreText">0%</span></div>
+                    <div class="progress-container">
+                        <div id="progressBar"></div>
+                    </div>
+                </div>
 
-                        <p class="result-status" id="hamaStatus">Menunggu...</p>
+                <div class="results-grid">
+                    <!-- Status Hama Card -->
+                    <!-- ID harus 'hamaCard' -->
+                    <div class="result-card" id="hamaCard">
+                        <!-- ID harus 'hamaIcon' -->
+                        <div class="result-icon" id="hamaIcon">🐛</div>
+                        <h3 class="result-title">Status Hama</h3>
+                        <!-- ID harus 'hamaStatus' -->
+                        <p class="result-status" id="hamaStatus">-</p>
+                        <!-- ID harus 'hamaDescription' -->
                         <p class="result-description" id="hamaDescription">-</p>
                     </div>
 
-                    <!-- CARD CUACA -->
+                    <!-- Status Cuaca Card -->
+                    <!-- ID harus 'cuacaCard' -->
                     <div class="result-card" id="cuacaCard">
+                        <!-- ID harus 'cuacaIcon' -->
                         <div class="result-icon" id="cuacaIcon">☀️</div>
                         <h3 class="result-title">Status Cuaca</h3>
+                        <!-- ID harus 'cuacaStatus' -->
                         <p class="result-status" id="cuacaStatus">-</p>
+                        <!-- ID harus 'cuacaDescription' -->
                         <p class="result-description" id="cuacaDescription">-</p>
                     </div>
                 </div>
 
+                <!-- Rekomendasi Card -->
+                <!-- ID harus 'rekomendasiCard' -->
                 <div class="recommendation-card" id="rekomendasiCard">
-                    <h3 class="recommendation-title">💡 Rekomendasi AI</h3>
-                    <div class="recommendation-content" id="rekomendasiContent"></div>
+                    <h3 class="recommendation-title">💡 Rekomendasi Tindakan (AI)</h3>
+                    <!-- ID harus 'rekomendasiContent' -->
+                    <div class="recommendation-content" id="rekomendasiContent">
+                        <p>Menunggu hasil analisis...</p>
+                    </div>
                 </div>
 
                 <button class="btn btn-secondary" onclick="resetForm()">
-                    <span class="btn-icon">🔄</span> Cek Lagi
+                    <span class="btn-icon">🔄</span>
+                    Analisis Ulang
                 </button>
             </section>
         </main>
 
+        <!-- Footer -->
         <footer class="footer">
-            <p>© 2025 Smart Farming System - Desa Sengka</p>
+            <p>© 2025 Sistem Deteksi Hama Cabai - Desa Sengka | Penelitian Pertanian Modern</p>
         </footer>
     </div>
 
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
