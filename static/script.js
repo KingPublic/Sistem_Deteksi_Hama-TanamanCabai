@@ -45,10 +45,11 @@ async function analyzeData(suara, getaran, kelembaban) {
         const result = await response.json();
 
         if (result.status === 'success') {
-            // TERIMA DATA DARI PYTHON
-            const confidence = result.confidence; // Skor 0-100
-            const statusText = result.status_text; // AMAN/WASPADA/BAHAYA
-            const hujan = result.hujan;
+            // TERIMA DATA DARI PYTHON (Sesuai app.py)
+            // Pastikan nama property di sini sama persis dengan key di jsonify python
+            const confidence = result.confidence;   // Mengambil 'confidence'
+            const statusText = result.status_text;  // Mengambil 'status_text'
+            const hujan = result.hujan;             // Mengambil 'hujan'
             
             updateUI(confidence, statusText, hujan, suara, getaran, kelembaban);
         } else {

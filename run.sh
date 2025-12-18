@@ -1,55 +1,48 @@
 #!/bin/bash
 
-# ============================================================
-# SCRIPT UNTUK MENJALANKAN SISTEM DETEKSI HAMA
-# ============================================================
-
-# 1. Pindah ke direktori tempat script ini berada
-# (Ini memastikan script jalan lancar meski dipanggil dari folder lain)
+# Masuk ke folder script
 cd "$(dirname "$0")"
 
 echo "=========================================="
-echo "🌶️  SISTEM DETEKSI HAMA CABAI LAUNCHER"
+echo "🌶️  SISTEM DETEKSI HAMA (MODE CSV)"
 echo "=========================================="
 
-# 2. Cek apakah folder 'venv' sudah ada?
-if [ -d "venv" ]; then
-    echo "✅ Virtual Environment ditemukan."
-    echo "   Mengaktifkan venv..."
-    source venv/bin/activate
-else
-    echo "⚠️  Virtual Environment (venv) TIDAK ditemukan!"
-    echo "⚙️  Sedang membuat venv baru..."
+# 1. Cek Venv
+if [ ! -d "venv" ]; then
+    echo "⚙️  Membuat Virtual Environment..."
     python3 -m venv venv
-    
-    echo "   Mengaktifkan venv..."
-    source venv/bin/activate
-
-    echo "📦 Menginstall library yang dibutuhkan..."
-    pip install flask pandas numpy scikit-learn joblib
-    
-    echo "✅ Instalasi selesai!"
 fi
 
-# 3. Cek apakah model .pkl sudah ada?
-if [ ! -f "model_hama.pkl" ]; then
-    echo "⚠️  File model 'model_hama.pkl' tidak ditemukan!"
-    echo "⚙️  Menjalankan training model dulu..."
+source venv/bin/activate
+
+# 2. Install Library (Pastikan pandas support csv)
+pip install flask pandas numpy scikit-learn joblib
+
+# 3. LOGIKA TRAINING (Cek CSV)
+if [ -f "dataset.csv" ]; then
+    echo "------------------------------------------"
+    echo "📊 Ditemukan 'dataset.csv'. Melakukan Training..."
     
-    # Cek apakah ada script training, jika ada jalankan
-    if [ -f "train_model.py" ]; then
-        python train_model.py
+    if [ -f "train_csv.py" ]; then
+        python train_csv.py
+        
+        if [ $? -ne 0 ]; then
+            echo "❌ Training Gagal!"
+            exit 1
+        fi
     else
-        echo "❌ Error: File 'train_model.py' juga tidak ada."
-        echo "   Pastikan Anda memiliki file training."
-        exit 1
+        echo "⚠️  File 'train_csv.py' tidak ditemukan!"
     fi
+    
+elif [ ! -f "model_hama.pkl" ]; then
+    echo "❌ Error: Tidak ada dataset.csv dan tidak ada model_hama.pkl"
+    exit 1
 fi
 
-# 4. Jalankan Aplikasi Flask
-echo "🚀 Menjalankan Server Flask..."
-echo "   Buka browser di: http://127.0.0.1:5000"
-echo "   (Tekan CTRL+C untuk berhenti)"
+# 4. Jalankan Server
+echo "------------------------------------------"
+echo "🚀 Menjalankan Server..."
+echo "   http://127.0.0.1:5000"
 echo "=========================================="
 
 python app.py
